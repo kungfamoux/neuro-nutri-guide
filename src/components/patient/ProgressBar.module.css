@@ -1,0 +1,51 @@
+.progressBarContainer {
+  width: 100%;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  height: 1.5rem;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.progressBar {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.3s ease-in-out;
+  min-width: 1.5rem;
+  width: 0%;
+}
+
+/* Generate width classes from 0% to 100% in 5% increments */
+.width-0 { width: 0%; }
+.width-5 { width: 5%; }
+.width-10 { width: 10%; }
+.width-15 { width: 15%; }
+.width-20 { width: 20%; }
+.width-25 { width: 25%; }
+.width-30 { width: 30%; }
+.width-35 { width: 35%; }
+.width-40 { width: 40%; }
+.width-45 { width: 45%; }
+.width-50 { width: 50%; }
+.width-55 { width: 55%; }
+.width-60 { width: 60%; }
+.width-65 { width: 65%; }
+.width-70 { width: 70%; }
+.width-75 { width: 75%; }
+.width-80 { width: 80%; }
+.width-85 { width: 85%; }
+.width-90 { width: 90%; }
+.width-95 { width: 95%; }
+.width-100 { width: 100%; }
+
+.highRisk {
+  background-color: #ef4444; /* red-500 */
+}
+
+.mediumRisk {
+  background-color: #f59e0b; /* yellow-500 */
+}
+
+.lowRisk {
+  background-color: #10b981; /* green-500 */
+}

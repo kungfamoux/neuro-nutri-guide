@@ -1,0 +1,49 @@
+.progressBarContainer {
+  position: relative;
+  width: 100%;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  height: 2rem;
+  overflow: hidden;
+}
+
+.progressBar {
+  height: 100%;
+  width: 0%;
+  border-radius: 9999px;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Set width based on data-progress attribute */
+.progressBarContainer[data-progress] .progressBar {
+  width: attr(data-progress %);
+}
+
+.progressBar.highRisk {
+  background-color: #ef4444; /* red-500 */
+}
+
+.progressBar.mediumRisk {
+  background-color: #f59e0b; /* yellow-500 */
+}
+
+.progressBar.lowRisk {
+  background-color: #10b981; /* green-500 */
+}
+
+.progressLabel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.riskLevel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2937; /* gray-800 */
+}

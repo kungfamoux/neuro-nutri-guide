@@ -352,22 +352,41 @@ class NutritionStrokeModel:
     
     def predict_stroke_risk(self, patient_data: Dict[str, Any]) -> Dict[str, Any]:
         """Predict stroke risk for a given patient."""
-        # Prepare input data
-        input_df = pd.DataFrame([patient_data])
-        
-        # Encode categorical variables
-        for col, encoder in self.encoders.items():
-            if col in input_df.columns:
-                input_df[col] = encoder.transform(input_df[col].astype(str))
-        
-        # Make prediction
-        features = input_df[self.feature_columns]
-        stroke_prob = self.stroke_model.predict_proba(features)[0][1]
-        
-        return {
-            'stroke_risk': float(stroke_prob),
-            'risk_category': self._get_risk_category(stroke_prob)
-        }
+        try:
+            # Prepare input data
+            input_df = pd.DataFrame([patient_data])
+            
+            # Encode categorical variables
+            for col, encoder in self.encoders.items():
+                if col in input_df.columns:
+                    # Convert to string and handle unseen labels
+                    input_df[col] = input_df[col].astype(str).str.lower().str.strip()
+                    
+                    # Handle unseen labels by using the most common class (usually index 0)
+                    mask = ~input_df[col].isin(encoder.classes_)
+                    if mask.any():
+                        print(f"Warning: Found unknown {col} values: {input_df.loc[mask, col].unique()}")
+                        # Replace unknown values with the first class (usually most common)
+                        input_df[col] = input_df[col].apply(
+                            lambda x: encoder.classes_[0] if x not in encoder.classes_ else x
+                        )
+                    
+                    # Transform using the encoder
+                    input_df[col] = encoder.transform(input_df[col])
+            
+            # Make prediction
+            features = input_df[self.feature_columns]
+            stroke_prob = self.stroke_model.predict_proba(features)[0][1]
+            
+            return {
+                'stroke_risk': float(stroke_prob),
+                'risk_category': self._get_risk_category(stroke_prob)
+            }
+            
+        except Exception as e:
+            print(f"Error in predict_stroke_risk: {str(e)}")
+            print(f"Input data: {patient_data}")
+            raise
     
     def get_nutrition_recommendations(self, patient_data: Dict[str, Any]) -> Dict[str, Any]:
         """Generate nutrition recommendations based on patient data."""
